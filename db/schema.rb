@@ -10,35 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180424222044) do
+ActiveRecord::Schema.define(version: 20180604112422) do
 
   create_table "frames", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "station_id"
     t.string "raw"
     t.text "source_ip"
     t.datetime "timestamp"
     t.boolean "processed", default: false
-    t.bigint "station_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["id"], name: "index_frames_on_id", unique: true
     t.index ["station_id"], name: "index_frames_on_station_id"
   end
 
   create_table "last_frames", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.float "value", limit: 24
     t.bigint "station_id"
+    t.float "value", limit: 24
     t.datetime "timestamp"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "variable_id"
     t.index ["station_id"], name: "index_last_frames_on_station_id"
+    t.index ["variable_id"], name: "index_last_frames_on_variable_id"
   end
 
   create_table "stations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
     t.text "name"
     t.string "code", null: false
     t.decimal "latitude", precision: 16, scale: 12
     t.decimal "longitude", precision: 16, scale: 12
-    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_stations_on_code", unique: true
@@ -56,9 +57,9 @@ ActiveRecord::Schema.define(version: 20180424222044) do
   end
 
   create_table "value_maxes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.float "value", limit: 24
     t.bigint "station_id"
     t.bigint "variable_id"
+    t.float "value", limit: 24
     t.datetime "timestamp"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -67,9 +68,9 @@ ActiveRecord::Schema.define(version: 20180424222044) do
   end
 
   create_table "value_mins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.float "value", limit: 24
     t.bigint "station_id"
     t.bigint "variable_id"
+    t.float "value", limit: 24
     t.datetime "timestamp"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -86,6 +87,10 @@ ActiveRecord::Schema.define(version: 20180424222044) do
     t.index ["code"], name: "index_variables_on_code", unique: true
   end
 
+  add_foreign_key "frames", "stations"
+  add_foreign_key "last_frames", "stations"
+  add_foreign_key "last_frames", "variables"
+  add_foreign_key "stations", "users"
   add_foreign_key "value_maxes", "stations"
   add_foreign_key "value_maxes", "variables"
   add_foreign_key "value_mins", "stations"

@@ -6,7 +6,6 @@ class CreateFrames < ActiveRecord::Migration[5.1]
       t.text :source_ip
       t.datetime :timestamp
       t.boolean :processed, default: false
-      t.references :station, index: true
       t.timestamps
     end
     #add_index :frames, :id, unique: true
