@@ -1,6 +1,7 @@
 class CreateStations < ActiveRecord::Migration[5.1]
   def change
     create_table :stations do |t|
+      t.belongs_to :user, foreign_key: true
       t.text :name
       t.string :code, null: false
       t.decimal :latitude, precision: 16, scale: 12

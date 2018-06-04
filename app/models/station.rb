@@ -1,5 +1,9 @@
 class Station < ActiveRecord::Base
-  has_many :frames
+  belongs_to :User
+  has_many :Frame
+  has_many :ValueMax
+  has_many :ValueMin
+  has_many :LastFrame
 
   validates :code, presence: true, uniqueness: true
 

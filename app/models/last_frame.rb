@@ -1,4 +1,6 @@
 class LastFrame < ApplicationRecord
-  has_and_belongs_to_many :variables
-  belongs_to :stations
+  belongs_to :Variable
+  belongs_to :Station
+
+  validates :id, presence: true, uniqueness: true
 end
