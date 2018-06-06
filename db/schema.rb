@@ -14,29 +14,31 @@ ActiveRecord::Schema.define(version: 20180604112422) do
 
   create_table "frames", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "station_id"
-    t.string "raw"
-    t.text "source_ip"
-    t.datetime "timestamp"
+    t.text "raw", null: false
+    t.string "source_ip"
+    t.datetime "timestamp", null: false
     t.boolean "processed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["id", "station_id"], name: "index_frames_on_id_and_station_id", unique: true
     t.index ["station_id"], name: "index_frames_on_station_id"
   end
 
   create_table "last_frames", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "station_id"
-    t.float "value", limit: 24
-    t.datetime "timestamp"
+    t.datetime "timestamp", null: false
+    t.float "value", limit: 24, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "station_id"
     t.bigint "variable_id"
+    t.index ["station_id", "variable_id"], name: "index_last_frames_on_station_id_and_variable_id", unique: true
     t.index ["station_id"], name: "index_last_frames_on_station_id"
     t.index ["variable_id"], name: "index_last_frames_on_variable_id"
   end
 
   create_table "stations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "user_id"
-    t.text "name"
+    t.bigint "user_id", null: false
+    t.text "name", null: false
     t.string "code", null: false
     t.decimal "latitude", precision: 16, scale: 12
     t.decimal "longitude", precision: 16, scale: 12
@@ -47,9 +49,10 @@ ActiveRecord::Schema.define(version: 20180604112422) do
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.text "name"
+    t.text "name", null: false
     t.string "email", null: false
-    t.text "password"
+    t.string "password_hash", null: false
+    t.string "password"
     t.text "company"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -59,10 +62,11 @@ ActiveRecord::Schema.define(version: 20180604112422) do
   create_table "value_maxes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "station_id"
     t.bigint "variable_id"
-    t.float "value", limit: 24
-    t.datetime "timestamp"
+    t.float "value", limit: 24, null: false
+    t.datetime "timestamp", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["station_id", "variable_id"], name: "index_value_maxes_on_station_id_and_variable_id", unique: true
     t.index ["station_id"], name: "index_value_maxes_on_station_id"
     t.index ["variable_id"], name: "index_value_maxes_on_variable_id"
   end
@@ -70,18 +74,19 @@ ActiveRecord::Schema.define(version: 20180604112422) do
   create_table "value_mins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "station_id"
     t.bigint "variable_id"
-    t.float "value", limit: 24
-    t.datetime "timestamp"
+    t.float "value", limit: 24, null: false
+    t.datetime "timestamp", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["station_id", "variable_id"], name: "index_value_mins_on_station_id_and_variable_id", unique: true
     t.index ["station_id"], name: "index_value_mins_on_station_id"
     t.index ["variable_id"], name: "index_value_mins_on_variable_id"
   end
 
   create_table "variables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code", null: false
-    t.text "name"
-    t.text "symbol"
+    t.text "name", null: false
+    t.text "symbol", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_variables_on_code", unique: true

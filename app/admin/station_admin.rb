@@ -8,14 +8,22 @@ module StationAdmin
       weight 2
       list do
         field :id
-        field :user_id # :user_id = method in models/station
+        field :user_id do
+          pretty_value do
+            User.find(bindings[:object].user_id).name
+          end
+        end
         field :name
         field :code
         field :latitude
         field :longitude
       end
       edit do
-        field :user_id
+        field :user_id, :enum do
+          enum do
+            User.all.collect {|p| [p.name, p.id]}
+          end
+        end
         field :name
         field :code
         field :latitude
@@ -23,7 +31,11 @@ module StationAdmin
       end
       show do
         field :id
-        field :user_id
+        field :user_id do
+          pretty_value do
+            User.find(bindings[:object].user_id).name
+          end
+        end
         field :name
         field :code
         field :latitude

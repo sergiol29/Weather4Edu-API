@@ -1,14 +1,13 @@
 class Station < ActiveRecord::Base
-  belongs_to :User
+  belongs_to :User, optional: true
   has_many :Frame
   has_many :ValueMax
   has_many :ValueMin
   has_many :LastFrame
 
-  validates :user_id, presence: true
   validates :name, presence: true
   validates :code, presence: true, uniqueness: true
 
-  # Include file app/admin/user_admin.rb, this file configure model Frame in RailsAdmin
+  # Include file app/admin/station_admin.rb, this file configure model Station in RailsAdmin
   include StationAdmin
 end

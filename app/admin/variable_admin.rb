@@ -1,28 +1,25 @@
-module UserAdmin
+module  VariableAdmin
   extend ActiveSupport::Concern
 
   # Show data indicate in list, edit, show, in view users
   included do
     rails_admin do
       navigation_label 'Menu'
-      weight 1
+      weight 7
       list do
-        field :id
+        field :code
         field :name
-        field :email
-        field :company
+        field :symbol
       end
       edit do
+        field :code
         field :name
-        field :email
-        field :password
-        field :company
+        field :symbol
       end
       show do
-        field :id
+        field :code
         field :name
-        field :email
-        field :company
+        field :symbol
       end
     end
   end

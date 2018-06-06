@@ -1,6 +1,10 @@
 class ValueMin < ApplicationRecord
-  belongs_to :Variable
-  belongs_to :Station
+  belongs_to :Variable, optional: true
+  belongs_to :Station, optional: true
 
-  validates :id, presence: true, uniqueness: true
+  validates :station_id, presence: true
+  validates :variable_id, presence: true
+
+  # Include file app/admin/value_min_admin.rb, this file configure model ValueMin in RailsAdmin
+  include ValueMinAdmin
 end

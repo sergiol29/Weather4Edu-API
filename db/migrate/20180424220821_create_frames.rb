@@ -1,13 +1,13 @@
 class CreateFrames < ActiveRecord::Migration[5.1]
   def change
     create_table :frames do |t|
-      t.belongs_to :station, foreign_key: true
-      t.string :raw
-      t.text :source_ip
+      t.references :station, foreign_key: true
+      t.text :raw, null: false
+      t.string :source_ip
       t.datetime :timestamp
       t.boolean :processed, default: false
       t.timestamps
     end
-    #add_index :frames, :id, unique: true
+    add_index :frames, [:id, :station_id], unique: true
   end
 end
