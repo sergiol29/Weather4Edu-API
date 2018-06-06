@@ -16,12 +16,12 @@ class Input::V1::SaveDataController < ApplicationController
       end
 
       frame.update(processed: true)
+
+      # If all transition is correct, return true and status 200
+      render json: { message: frame }, status: 200
     end
 
-    # If all transition is correct, return true and status 200
-    render json: { message: 'OK' }, status: 200
-
-      # If occurred a error in rescue => error, error.message = it was not ...
+    # If occurred a error in rescue => error, error.message = it was not ...
     # Similar a try cath
     rescue => error
     render json: { error: "An error has occurred while processed frame, #{ error.message }" }, status: 400
