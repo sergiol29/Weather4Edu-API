@@ -52,18 +52,6 @@ class Input::V1::SaveDataController < ApplicationController
     end
   end
 
-  # Check if params of JSON is correct
-  def wrong_params?
-    if has_not_mandatory_params?
-      render json: { message: "Wrong data params" }, status: 400
-    end
-  end
-
-  # Check if params DEVICE_CODE, DATA is present in JSON send
-  def has_not_mandatory_params?
-    !params[:STATION_CODE].present? || !params[:DATA].present?
-  end
-
   # created frame with params
   def frame_attrs
     {
@@ -85,5 +73,17 @@ class Input::V1::SaveDataController < ApplicationController
 
   def time_now
     Time.now
+  end
+
+  # Check if params of JSON is correct
+  def wrong_params?
+    if has_not_mandatory_params?
+      render json: { message: "Wrong data params" }, status: 400
+    end
+  end
+
+  # Check if params DEVICE_CODE, DATA is present in JSON send
+  def has_not_mandatory_params?
+    !params[:STATION_CODE].present? || !params[:DATA].present?
   end
 end

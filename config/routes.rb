@@ -7,15 +7,17 @@ Rails.application.routes.draw do
   namespace :input do
     namespace :v1 do
       resources :save_data, only: [:create]
-      #resources :device_update, only: [:update]
+      resources :update_station, only: [:update]
     end
   end
 
   # # Routes for controller data in Controller > input > v1
   namespace :api do
     namespace :v1 do
+      resources :login_user, only: [:index]
       resources :stations_user, only: [:index]
-      #resources :device_update, only: [:update]
+      resources :values_maxes_station, only: [:show]
+      resources :values_mins_station, only: [:show]
     end
   end
 
