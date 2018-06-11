@@ -30,14 +30,16 @@ RailsAdmin.config do |config|
     dashboard                     # mandatory
     index                         # mandatory
     new do
-      except ['Frame'] # Disable action new in Datum and Frame
+      except ['Frame', 'Datum', 'ValueMax', 'ValueMin', 'LastFrame'] # Disable action new at models indicate
     end
     export
     bulk_delete
     show
-    edit
+    edit do
+      except ['Frame', 'Datum', 'ValueMax', 'ValueMin', 'LastFrame'] # Disable action delete at models indicate
+    end
     delete do
-      except ['Frame'] # Disable action delete in Datum and Frame
+      except ['Frame', 'Datum', 'ValueMax', 'ValueMin', 'LastFrame'] # Disable action delete at models indicate
     end
     show_in_app
 

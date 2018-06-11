@@ -1,7 +1,7 @@
 class CreateLastFrames < ActiveRecord::Migration[5.1]
   def change
     create_table :last_frames do |t|
-      t.datetime :timestamp
+      t.integer :timestamp
       t.float :value
       t.timestamps
     end

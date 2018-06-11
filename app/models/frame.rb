@@ -1,5 +1,6 @@
 class Frame < ApplicationRecord
   belongs_to :Station, optional: true
+  has_many :Datum
 
   validates :raw, presence: true
   validates :timestamp, presence: true

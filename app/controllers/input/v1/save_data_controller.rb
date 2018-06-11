@@ -6,19 +6,20 @@ class Input::V1::SaveDataController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      frame = Frame.create!(frame_attrs)
+      @frame = Frame.create!(frame_attrs)
 
       params[:DATA].each do |code, value|
       next if value.nil? || variable(code).nil? # Continuar solo si el valor de la variable en el JSON es true y el codigo de la variable existe en la BD
         LastFrame.find_or_create_by!(lastframe_attrs).update(value: value, timestamp: time_now)
+        save_data(value)
         save_value_max(value)
         save_value_min(value)
       end
 
-      frame.update(processed: true)
+      @frame.update(processed: true)
 
       # If all transition is correct, return true and status 200
-      render json: { message: frame }, status: 200
+      render json: { message: @frame }, status: 200
     end
 
     # If occurred a error in rescue => error, error.message = it was not ...
@@ -34,6 +35,10 @@ class Input::V1::SaveDataController < ApplicationController
 
   def variable(variable)
     @variable = Variable.find_by(code: variable)
+  end
+
+  def save_data(value)
+    Datum.create!(data_attrs(value, @frame.id))
   end
 
   def save_value_max(value)
@@ -71,8 +76,18 @@ class Input::V1::SaveDataController < ApplicationController
     }
   end
 
+  def data_attrs(value, frame_id)
+    {
+        frame_id: frame_id,
+        station_id: station.id,
+        variable_id: @variable.id,
+        value: value,
+        timestamp: time_now
+    }
+  end
+
   def time_now
-    Time.now
+    Time.now.to_i
   end
 
   # Check if params of JSON is correct

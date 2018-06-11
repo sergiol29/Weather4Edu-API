@@ -2,6 +2,7 @@ class Variable < ApplicationRecord
   has_many :ValueMax
   has_many :ValueMin
   has_many :LastFrame
+  has_many :Datum
 
   validates :code, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true

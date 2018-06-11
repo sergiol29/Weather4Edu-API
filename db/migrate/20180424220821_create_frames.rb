@@ -4,7 +4,7 @@ class CreateFrames < ActiveRecord::Migration[5.1]
       t.references :station, foreign_key: true
       t.text :raw, null: false
       t.string :source_ip
-      t.datetime :timestamp
+      t.integer :timestamp
       t.boolean :processed, default: false
       t.timestamps
     end

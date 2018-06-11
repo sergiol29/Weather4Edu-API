@@ -4,6 +4,7 @@ class Station < ActiveRecord::Base
   has_many :ValueMax
   has_many :ValueMin
   has_many :LastFrame
+  has_many :Datum
 
   validates :name, presence: true
   validates :code, presence: true, uniqueness: true

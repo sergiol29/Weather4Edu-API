@@ -1,6 +1,6 @@
 class Api::V1::ValuesMinsStationController < ApplicationController
   before_action :wrong_params?, only: [:show]
-  # before action in def index, run function wrong_params?
+  # before action in def show, run function wrong_params?
 
   def show
     @station = Station.find(params[:id])
@@ -19,6 +19,8 @@ class Api::V1::ValuesMinsStationController < ApplicationController
     data = {
         id: @station.id,
         name: @station.name,
+        latitude: @station.latitude,
+        longitude: @station.longitude,
         values_mins: values_mins
     }
   end

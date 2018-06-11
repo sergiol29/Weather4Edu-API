@@ -15,9 +15,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :login_user, only: [:index]
-      resources :stations_user, only: [:index]
+      resources :stations_user, only: [:show]
       resources :values_maxes_station, only: [:show]
       resources :values_mins_station, only: [:show]
+      resources :station_lasted_data, only: [:show]
     end
   end
 

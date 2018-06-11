@@ -5,7 +5,7 @@ module  VariableAdmin
   included do
     rails_admin do
       navigation_label 'Menu'
-      weight 7
+      weight 8
       list do
         field :code
         field :name

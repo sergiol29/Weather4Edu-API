@@ -10,13 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180604112422) do
+ActiveRecord::Schema.define(version: 20180611151154) do
+
+  create_table "data", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "frame_id"
+    t.bigint "station_id"
+    t.bigint "variable_id"
+    t.float "value", limit: 24
+    t.integer "timestamp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["frame_id", "station_id", "variable_id"], name: "index_data_on_frame_id_and_station_id_and_variable_id", unique: true
+    t.index ["frame_id"], name: "index_data_on_frame_id"
+    t.index ["station_id"], name: "index_data_on_station_id"
+    t.index ["variable_id"], name: "index_data_on_variable_id"
+  end
 
   create_table "frames", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "station_id"
     t.text "raw", null: false
     t.string "source_ip"
-    t.datetime "timestamp", null: false
+    t.integer "timestamp"
     t.boolean "processed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -25,8 +39,8 @@ ActiveRecord::Schema.define(version: 20180604112422) do
   end
 
   create_table "last_frames", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.datetime "timestamp", null: false
-    t.float "value", limit: 24, null: false
+    t.integer "timestamp"
+    t.float "value", limit: 24
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "station_id"
@@ -62,8 +76,8 @@ ActiveRecord::Schema.define(version: 20180604112422) do
   create_table "value_maxes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "station_id"
     t.bigint "variable_id"
-    t.float "value", limit: 24, null: false
-    t.datetime "timestamp", null: false
+    t.float "value", limit: 24, default: -8388610.0
+    t.integer "timestamp"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["station_id", "variable_id"], name: "index_value_maxes_on_station_id_and_variable_id", unique: true
@@ -74,8 +88,8 @@ ActiveRecord::Schema.define(version: 20180604112422) do
   create_table "value_mins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "station_id"
     t.bigint "variable_id"
-    t.float "value", limit: 24, null: false
-    t.datetime "timestamp", null: false
+    t.float "value", limit: 24, default: 8388610.0
+    t.integer "timestamp"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["station_id", "variable_id"], name: "index_value_mins_on_station_id_and_variable_id", unique: true
@@ -92,6 +106,9 @@ ActiveRecord::Schema.define(version: 20180604112422) do
     t.index ["code"], name: "index_variables_on_code", unique: true
   end
 
+  add_foreign_key "data", "frames"
+  add_foreign_key "data", "stations"
+  add_foreign_key "data", "variables"
   add_foreign_key "frames", "stations"
   add_foreign_key "last_frames", "stations"
   add_foreign_key "last_frames", "variables"

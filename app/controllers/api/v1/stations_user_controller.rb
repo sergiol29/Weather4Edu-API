@@ -1,8 +1,8 @@
 class Api::V1::StationsUserController < ApplicationController
   # before action in def index, run function wrong_params?
-  before_action :wrong_params?, only: [:index]
+  before_action :wrong_params?, only: [:show]
 
-  def index
+  def show
     if !user.nil?
       # If all transition is correct, return true and status 200
       render json: groupped_user, status: 200
@@ -18,7 +18,7 @@ class Api::V1::StationsUserController < ApplicationController
 
   private
   def user
-    @user = User.find_by(email: params[:email])
+    @user = User.find(params[:id])
   end
 
   def stations_user
@@ -77,7 +77,7 @@ class Api::V1::StationsUserController < ApplicationController
 
   # Check if params DEVICE_CODE, DATA is present in JSON send
   def has_not_mandatory_params?
-    !params[:email].present?
+    !params[:id].present?
   end
 
 end
