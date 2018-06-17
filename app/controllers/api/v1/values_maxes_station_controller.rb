@@ -15,10 +15,15 @@ class Api::V1::ValuesMaxesStationController < ApplicationController
   end
 
   private
+  def user
+    @user = User.find(@station.user_id)
+  end
+
   def groupped_station
     data = {
         id: @station.id,
         name: @station.name,
+        company: user.company,
         latitude: @station.latitude,
         longitude: @station.longitude,
         values_maxes: values_maxes

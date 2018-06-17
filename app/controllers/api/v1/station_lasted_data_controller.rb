@@ -16,6 +16,10 @@ class Api::V1::StationLastedDataController < ApplicationController
   end
 
   private
+  def user
+    @user = User.find(@station.user_id)
+  end
+
   def station
     @station = Station.find(params[:id])
   end
@@ -28,7 +32,7 @@ class Api::V1::StationLastedDataController < ApplicationController
     data = {
         id: @station.id,
         name: @station.name,
-        company: @station.company,
+        company: user.company,
         latitude: @station.latitude,
         longitude: @station.longitude,
         data: groupped_variable
