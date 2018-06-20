@@ -23,6 +23,7 @@ class Api::V1::ValuesMaxesStationController < ApplicationController
     data = {
         id: @station.id,
         name: @station.name,
+        user_id: user.id,
         company: user.company,
         latitude: @station.latitude,
         longitude: @station.longitude,
