@@ -2,6 +2,7 @@ require 'bcrypt'
 
 class User < ApplicationRecord
   has_many :Station
+  has_many :Variable
 
   # users.password_hash in the database is a :string
   include BCrypt

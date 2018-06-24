@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180611151154) do
+ActiveRecord::Schema.define(version: 20180622183431) do
 
   create_table "data", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "frame_id"
@@ -103,7 +103,9 @@ ActiveRecord::Schema.define(version: 20180611151154) do
     t.text "symbol", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["code"], name: "index_variables_on_code", unique: true
+    t.index ["user_id"], name: "index_variables_on_user_id"
   end
 
   add_foreign_key "data", "frames"
@@ -117,4 +119,5 @@ ActiveRecord::Schema.define(version: 20180611151154) do
   add_foreign_key "value_maxes", "variables"
   add_foreign_key "value_mins", "stations"
   add_foreign_key "value_mins", "variables"
+  add_foreign_key "variables", "users"
 end
