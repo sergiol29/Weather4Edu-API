@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :save_data, only: [:create]
       resources :update_station, only: [:update]
+      resources :create_variables, only: [:create]
     end
   end
 
