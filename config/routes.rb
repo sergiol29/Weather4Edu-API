@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  # Auth user for App Angular
+  #mount_devise_token_auth_for 'User', at: 'auth'
+
+  # Auth rails admin with devise
+  devise_for :users
 
   # Change URL gem Rails admin
   mount RailsAdmin::Engine => '/manager', as: 'rails_admin'
@@ -9,6 +14,7 @@ Rails.application.routes.draw do
       resources :save_data, only: [:create]
       resources :update_station, only: [:update]
       resources :create_variables, only: [:create]
+      resources :delete_variables, only: [:destroy]
     end
   end
 
@@ -20,6 +26,8 @@ Rails.application.routes.draw do
       resources :values_maxes_station, only: [:show]
       resources :values_mins_station, only: [:show]
       resources :station_lasted_data, only: [:show]
+      resources :variables_user, only: [:show]
+      resources :data_variables, only: [:show, :update]
     end
   end
 

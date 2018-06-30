@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.5'
 # Use mysql as the database for Active Record
@@ -33,6 +32,20 @@ gem 'rails_admin', '~> 1.3'
 #
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+
+# Cors permit POST from APP
+gem 'rack-cors', require: 'rack/cors'
+
+# Authenticate with devise in rails admin
+gem 'devise'
+
+# Bootstrap
+gem 'bootstrap', '~> 4.0'
+gem 'jquery-rails'
+
+# Gem for token Auth of App Angular
+#gem 'devise_token_auth'
+#gem 'omniauth'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

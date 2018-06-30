@@ -5,7 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.create!(name: 'Sergio Lopez', email: 'lopezsergio@correo.ugr.es', password: '12345678', company: 'TFG')
+User.create!(name: 'Sergio Lopez', email: 'lopezsergio@correo.ugr.es', password: '12345678', company: 'TFG', role: 'admin')
+User.create!(name: 'Test', email: 'test@test.es', password: '12345678', company: 'TFG', role: 'client')
 Station.create!(user_id: 1, name: 'Stations', code: 'a0:20:a6:1b:da:ac', latitude: 37.159438000000, longitude: -3.605500000000)
 Variable.create!(code: 'FR04', name: 'Lluvia FR04', symbol: '', user_id: 1)
 Variable.create!(code: 'MQ7', name: 'CO2 MQ7', symbol: '', user_id: 1)

@@ -57,6 +57,7 @@ class Api::V1::StationLastedDataController < ApplicationController
         code: @variable.code,
         name: @variable.name,
         symbol: @variable.symbol,
+        color: @variable.color,
         values: []
     }
   end

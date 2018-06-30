@@ -30,7 +30,8 @@ class Input::V1::CreateVariablesController < ApplicationController
         user_id: params[:user_id],
         code: params[:code],
         symbol: params[:symbol],
-        name: params[:name]
+        name: params[:name],
+        color: params[:color]
     }
   end
 

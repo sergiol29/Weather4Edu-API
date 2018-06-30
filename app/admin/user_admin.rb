@@ -11,18 +11,21 @@ module UserAdmin
         field :name
         field :email
         field :company
+        field :role
       end
       edit do
         field :name
         field :email
         field :password
         field :company
+        field :role
       end
       show do
         field :id
         field :name
         field :email
         field :company
+        field :role
       end
     end
   end

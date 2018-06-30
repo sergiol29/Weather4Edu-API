@@ -3,7 +3,7 @@ class Api::V1::LoginUserController < ApplicationController
   before_action :wrong_params?, only: [:index]
 
   def index
-    if !user.nil? && BCrypt::Password.new(user.password_hash) == params[:password]
+    if !user.nil? && BCrypt::Password.new(user.encrypted_password) == params[:password]
       # If all transition is correct, return true and status 200
       render json: groupped_user, status: 200
     else

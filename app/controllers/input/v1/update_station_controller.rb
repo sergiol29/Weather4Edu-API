@@ -13,7 +13,7 @@ class Input::V1::UpdateStationController < ApplicationController
     # If occurred a error in rescue => error, error.message = it was not ...
     # Similar a try cath
     rescue => error
-    render json: { error: "An error has occurred while processed frame, #{ error.message }", update_station: msg_update }, status: 400
+      render json: { error: "An error has occurred while processed frame, #{ error.message }", update_station: msg_update }, status: 400
   end
 
   private

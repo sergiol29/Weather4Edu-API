@@ -1,20 +1,26 @@
-require 'bcrypt'
+#require 'bcrypt'
 
 class User < ApplicationRecord
+  # Authenticate with devise in rails admin
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
   has_many :Station
   has_many :Variable
 
   # users.password_hash in the database is a :string
-  include BCrypt
+  #include BCrypt
 
-  def password
-    @password ||= Password.new(password_hash)
-  end
+  #def password
+  #  @password ||= Password.new(password_hash)
+  #end
 
-  def password=(new_password)
-    @password = Password.create(new_password)
-    self.password_hash = @password
-  end
+  #def password=(new_password)
+  #  @password = Password.create(new_password)
+  #  self.password_hash = @password
+  #end
+
+  enum role: [:client, :admin]
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :name, presence: true, uniqueness: true
@@ -29,5 +35,4 @@ class User < ApplicationRecord
 
   # Include file app/admin/user_admin.rb, this file configure model User in RailsAdmin
   include UserAdmin
-
 end

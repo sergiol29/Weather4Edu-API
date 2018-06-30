@@ -25,6 +25,7 @@ module  VariableAdmin
             User.all.collect {|p| [p.name, p.id]}
           end
         end
+        field :color
       end
       show do
         field :code
@@ -35,6 +36,7 @@ module  VariableAdmin
             User.find(bindings[:object].user_id).name
           end
         end
+        field :color
       end
     end
   end

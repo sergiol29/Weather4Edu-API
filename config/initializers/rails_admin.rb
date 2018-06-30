@@ -1,15 +1,19 @@
 RailsAdmin.config do |config|
+  # If current user not admin, not log in at rails admin
+  config.authorize_with do
+    redirect_to '/' unless current_user.role == 'admin'
+  end
 
   ### Popular gems integration
 
   ## == Devise ==
-  # config.authenticate_with do
-  #   warden.authenticate! scope: :user
-  # end
-  # config.current_user_method(&:current_user)
+  config.authenticate_with do
+    warden.authenticate! scope: :user
+  end
+  config.current_user_method(&:current_user)
 
   ## == Cancan ==
-  # config.authorize_with :cancan
+  #config.authorize_with :cancan
 
   ## == Pundit ==
   # config.authorize_with :pundit
@@ -25,7 +29,7 @@ RailsAdmin.config do |config|
 
   config.actions do
     # Change name backend RailsAdmin
-    config.main_app_name = ['IoT API TFG']
+    config.main_app_name = ['API TFG']
 
     dashboard                     # mandatory
     index                         # mandatory
