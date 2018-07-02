@@ -5,7 +5,6 @@ class Api::V1::StationLastedDataController < ApplicationController
   def show
     @datum = station.Datum.where('timestamp >= ? and timestamp <= ?', params[:from], params[:to]).group_by(&:variable_id)
 
-
     # If all transition is correct, return true and status 200
     render json: groupped_station, status: 200
 
@@ -28,6 +27,10 @@ class Api::V1::StationLastedDataController < ApplicationController
     @variable = Variable.find(variable_id)
   end
 
+  def view_variable(variable_id)
+    @view_variable = @station.ViewVariable.find_by(variable_id: variable_id)
+  end
+
   def groupped_station
     data = {
         id: @station.id,
@@ -43,7 +46,9 @@ class Api::V1::StationLastedDataController < ApplicationController
   def groupped_variable
     response = []
     @datum.each do |variable_id, data|
+      #binding.pry
       variable(variable_id)
+      view_variable(variable_id)
       variable_data = base_variable
       variable_data[:values] = data.map { |datum| { timestamp: datum.timestamp, value: datum.value } }
       response.push(variable_data)
@@ -55,9 +60,9 @@ class Api::V1::StationLastedDataController < ApplicationController
     {
         id: @variable.id,
         code: @variable.code,
-        name: @variable.name,
-        symbol: @variable.symbol,
-        color: @variable.color,
+        name: @view_variable.name,
+        symbol: @view_variable.symbol,
+        color: @view_variable.color,
         values: []
     }
   end

@@ -1,9 +1,9 @@
 class CreateData < ActiveRecord::Migration[5.1]
   def change
     create_table :data do |t|
-      t.references :frame, foreign_key: true
-      t.references :station, foreign_key: true
-      t.references :variable, foreign_key: true
+      t.references :frame, foreign_key: {on_delete: :cascade}, null: false
+      t.references :station, foreign_key: {on_delete: :cascade}, null: false
+      t.references :variable, foreign_key: {on_delete: :cascade}, null: false
       t.float :value
       t.integer :timestamp
       t.timestamps

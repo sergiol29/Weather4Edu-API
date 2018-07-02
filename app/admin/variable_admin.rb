@@ -7,36 +7,15 @@ module  VariableAdmin
       navigation_label 'Menu'
       weight 8
       list do
+        field :id
         field :code
-        field :name
-        field :symbol
-        field :user_id do
-          pretty_value do
-            User.find(bindings[:object].user_id).name
-          end
-        end
       end
       edit do
         field :code
-        field :name
-        field :symbol
-        field :user_id, :enum do
-          enum do
-            User.all.collect {|p| [p.name, p.id]}
-          end
-        end
-        field :color
       end
       show do
+        field :id
         field :code
-        field :name
-        field :symbol
-        field :user_id do
-          pretty_value do
-            User.find(bindings[:object].user_id).name
-          end
-        end
-        field :color
       end
     end
   end

@@ -15,7 +15,7 @@ module  DatumAdmin
         end
         field :variable_id do
           pretty_value do
-            Variable.find(bindings[:object].variable_id).name
+            Variable.find(bindings[:object].variable_id).code
           end
         end
         field :value
@@ -30,7 +30,7 @@ module  DatumAdmin
         end
         field :variable_id do
           pretty_value do
-            Variable.find(bindings[:object].variable_id).name
+            Variable.find(bindings[:object].variable_id).code
           end
         end
         field :value

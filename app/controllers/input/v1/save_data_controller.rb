@@ -2,14 +2,14 @@ class Input::V1::SaveDataController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   # before action in def create, run function wrong_params?
-  before_action :wrong_params?, only: [:create]
+  before_action :wrong_params?, :station, only: [:create]
 
   def create
     ActiveRecord::Base.transaction do
       @frame = Frame.create!(frame_attrs)
-
       params[:DATA].each do |code, value|
-      next if value.nil? || variable(code).nil? # Continuar solo si el valor de la variable en el JSON es true y el codigo de la variable existe en la BD
+      next if value.nil? # Continue if variable value at JSON is not null
+        variable(code) # Check if variable exist, else auto-created variable
         LastFrame.find_or_create_by!(lastframe_attrs).update(value: value, timestamp: time_now)
         save_data(value)
         save_value_max(value)
@@ -25,16 +25,31 @@ class Input::V1::SaveDataController < ApplicationController
     # If occurred a error in rescue => error, error.message = it was not ...
     # Similar a try cath
     rescue => error
-    render json: { error: "An error has occurred while processed frame, #{ error.message }" }, status: 400
+      render json: { error: "An error has occurred while processed frame, #{ error.message }" }, status: 400
   end
 
   private
+  # Before execute function create, check if station exist, else auto-created station
   def station
-    @station ||= Station.find_by(code: params[:STATION_CODE])
+    if Station.exists?(code: params[:STATION_CODE])
+      @station ||= Station.find_by(code: params[:STATION_CODE])
+    else
+      @station ||= Station.create!(station_attrs)
+    end
   end
 
-  def variable(variable)
-    @variable = Variable.find_by(code: variable)
+  # Check if variable exist, else auto-created station
+  def variable(code)
+    if Variable.exists?(code: code)
+      @variable = Variable.find_by(code: code)
+    else
+      @variable = Variable.create!(code: code)
+      ViewVariable.create!(station_id: @station.id, variable_id: @variable.id)
+    end
+  end
+
+  def user_admin
+    User.find_by(role: 'admin').id
   end
 
   def save_data(value)
@@ -57,10 +72,19 @@ class Input::V1::SaveDataController < ApplicationController
     end
   end
 
+  # attrs for create station if not exist
+  def station_attrs
+    {
+        code: params[:STATION_CODE],
+        user_id: user_admin,
+        name: '-'
+    }
+  end
+
   # created frame with params
   def frame_attrs
     {
-        station_id: station.id,
+        station_id: @station.id,
         raw: request.raw_post,
         source_ip: request.remote_ip,
         timestamp: time_now,
@@ -71,7 +95,7 @@ class Input::V1::SaveDataController < ApplicationController
   # created last frame with params
   def lastframe_attrs
     {
-        station_id: station.id,
+        station_id: @station.id,
         variable_id: @variable.id,
     }
   end
@@ -79,7 +103,7 @@ class Input::V1::SaveDataController < ApplicationController
   def data_attrs(value, frame_id)
     {
         frame_id: frame_id,
-        station_id: station.id,
+        station_id: @station.id,
         variable_id: @variable.id,
         value: value,
         timestamp: time_now

@@ -13,7 +13,7 @@ class Api::V1::StationsUserController < ApplicationController
     # If occurred a error in rescue => error, error.message = it was not ...
     # Similar a try cath
     rescue => error
-      render json: { error: "An error has occurred while processed user, #{ error.message }" }, status: 400
+      render json: { error: "An error has occurred while processed stations user, #{ error.message }" }, status: 400
   end
 
   private
@@ -22,8 +22,11 @@ class Api::V1::StationsUserController < ApplicationController
   end
 
   def stations_user
-    stations = @user.Station
-    stations.map{ |station| groupped_station(station) }
+    stations = @user.Station # Get stations of user
+    stations.map do |station|
+      @station = station # Save in variable station
+      groupped_station(station)
+    end
   end
 
   def groupped_user
@@ -47,9 +50,10 @@ class Api::V1::StationsUserController < ApplicationController
   end
 
   def latest_frame(station)
-    last_frame =  station.LastFrame
-    last_frame.map do |data|
-      variable(data)
+    last_frame = station.LastFrame
+    last_frame.map do |data| # Read variables of LastFrame the station
+      variable(data) # Get variable reading of LastFrame
+      view_variable(data) # Get view_variable reading of LastFrame
       groupped_last_frame(data)
     end
   end
@@ -57,8 +61,9 @@ class Api::V1::StationsUserController < ApplicationController
   def groupped_last_frame(data)
     {
         code: @variable.code,
-        name: @variable.name,
-        symbol: @variable.symbol,
+        name: @view_variable.name,
+        symbol: @view_variable.symbol,
+        view_human: @view_variable.view_human,
         value: data.value,
         timestamp: data.timestamp
     }
@@ -66,6 +71,10 @@ class Api::V1::StationsUserController < ApplicationController
 
   def variable(data)
     @variable = Variable.find(data.variable_id)
+  end
+
+  def view_variable(data)
+    @view_variable = @station.ViewVariable.find_by(variable_id: data.variable_id)
   end
 
   # Check if params of JSON is correct

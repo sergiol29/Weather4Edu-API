@@ -18,14 +18,16 @@ class Api::V1::DataVariablesController < ApplicationController
 
   # METHOD POST
   def update
-    msg_update = variable.update!(update_variable)
-    # If all transition is correct, return true and status 200
-    render json: { update_variable: msg_update }, status: 200
+    if !variable.nil?
+      msg_update = view_variable.update!(update_variable)
+      # If all transition is correct, return true and status 200
+      render json: { update_variable: msg_update }, status: 200
+    end
 
     # If occurred a error in rescue => error, error.message = it was not ...
     # Similar a try cath
     rescue => error
-      render json: { error: "An error has occurred while processed variable, #{ error.message }", update_variable: msg_update }, status: 400
+      render json: { error: "An error has occurred while processed variable, #{ error.message }" }, status: 400
   end
 
   private
@@ -33,23 +35,28 @@ class Api::V1::DataVariablesController < ApplicationController
     @variable = Variable.find(params[:id])
   end
 
+  def view_variable
+    @view_variable = ViewVariable.find_by(variable_id: @variable.id)
+  end
+
   def groupped_variable
     data = {
-        id: @variable.id,
-        id_user: @variable.user_id,
         code: @variable.code,
-        name: @variable.name,
-        symbol: @variable.symbol,
-        color: @variable.color
+        variable_id: view_variable.variable_id,
+        station_id: @view_variable.station_id,
+        name: @view_variable.name,
+        symbol: @view_variable.symbol,
+        color: @view_variable.color,
+        view_human: @view_variable.view_human
     }
   end
 
   def update_variable
     {
         name: params[:name],
-        code: params[:code],
         symbol: params[:symbol],
-        color: params[:color]
+        color: params[:color],
+        view_human: params[:view_human]
     }
   end
 

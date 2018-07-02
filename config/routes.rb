@@ -26,7 +26,7 @@ Rails.application.routes.draw do
       resources :values_maxes_station, only: [:show]
       resources :values_mins_station, only: [:show]
       resources :station_lasted_data, only: [:show]
-      resources :variables_user, only: [:show]
+      resources :variables_station, only: [:show]
       resources :data_variables, only: [:show, :update]
     end
   end

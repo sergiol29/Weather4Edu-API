@@ -33,8 +33,9 @@ class Api::V1::ValuesMaxesStationController < ApplicationController
 
   def values_maxes
     values_max = @station.ValueMax
-    values_max.map do |data|
-      variable(data)
+    values_max.map do |data| # Read variables of ValueMax the station
+      variable(data) # Get variable reading of ValueMax
+      view_variable(data) # Get view_variable reading of ValueMax
       groupped_frame(data)
     end
   end
@@ -42,8 +43,9 @@ class Api::V1::ValuesMaxesStationController < ApplicationController
   def groupped_frame(data)
     {
         code: @variable.code,
-        name: @variable.name,
-        symbol: @variable.symbol,
+        name: @view_variable.name,
+        symbol: @view_variable.symbol,
+        view_human: @view_variable.view_human,
         value: data.value,
         timestamp: data.timestamp
     }
@@ -51,6 +53,10 @@ class Api::V1::ValuesMaxesStationController < ApplicationController
 
   def variable(data)
     @variable = Variable.find(data.variable_id)
+  end
+
+  def view_variable(data)
+    @view_variable = @station.ViewVariable.find_by(variable_id: data.variable_id)
   end
 
   # Check if params of JSON is correct

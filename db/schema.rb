@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180627135344) do
+ActiveRecord::Schema.define(version: 20180630093043) do
 
   create_table "data", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "frame_id"
-    t.bigint "station_id"
-    t.bigint "variable_id"
+    t.bigint "frame_id", null: false
+    t.bigint "station_id", null: false
+    t.bigint "variable_id", null: false
     t.float "value", limit: 24
     t.integer "timestamp"
     t.datetime "created_at", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20180627135344) do
   end
 
   create_table "frames", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "station_id"
+    t.bigint "station_id", null: false
     t.text "raw", null: false
     t.string "source_ip"
     t.integer "timestamp"
@@ -43,8 +43,8 @@ ActiveRecord::Schema.define(version: 20180627135344) do
     t.float "value", limit: 24
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "station_id"
-    t.bigint "variable_id"
+    t.bigint "station_id", null: false
+    t.bigint "variable_id", null: false
     t.index ["station_id", "variable_id"], name: "index_last_frames_on_station_id_and_variable_id", unique: true
     t.index ["station_id"], name: "index_last_frames_on_station_id"
     t.index ["variable_id"], name: "index_last_frames_on_variable_id"
@@ -54,8 +54,8 @@ ActiveRecord::Schema.define(version: 20180627135344) do
     t.bigint "user_id", null: false
     t.text "name", null: false
     t.string "code", null: false
-    t.decimal "latitude", precision: 16, scale: 12
-    t.decimal "longitude", precision: 16, scale: 12
+    t.decimal "latitude", precision: 16, scale: 12, default: "37.197055"
+    t.decimal "longitude", precision: 16, scale: 12, default: "-3.6245507"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_stations_on_code", unique: true
@@ -68,33 +68,23 @@ ActiveRecord::Schema.define(version: 20180627135344) do
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "provider", default: "email", null: false
-    t.string "uid", default: "", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.boolean "allow_password_change", default: false
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
-    t.text "tokens"
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
   create_table "value_maxes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "station_id"
-    t.bigint "variable_id"
+    t.bigint "station_id", null: false
+    t.bigint "variable_id", null: false
     t.float "value", limit: 24, default: -8388610.0
     t.integer "timestamp"
     t.datetime "created_at", null: false
@@ -105,8 +95,8 @@ ActiveRecord::Schema.define(version: 20180627135344) do
   end
 
   create_table "value_mins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "station_id"
-    t.bigint "variable_id"
+    t.bigint "station_id", null: false
+    t.bigint "variable_id", null: false
     t.float "value", limit: 24, default: 8388610.0
     t.integer "timestamp"
     t.datetime "created_at", null: false
@@ -118,26 +108,36 @@ ActiveRecord::Schema.define(version: 20180627135344) do
 
   create_table "variables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code", null: false
-    t.text "name", null: false
-    t.string "symbol", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
-    t.string "color", default: "#000000"
     t.index ["code"], name: "index_variables_on_code", unique: true
-    t.index ["user_id"], name: "index_variables_on_user_id"
   end
 
-  add_foreign_key "data", "frames"
-  add_foreign_key "data", "stations"
-  add_foreign_key "data", "variables"
-  add_foreign_key "frames", "stations"
-  add_foreign_key "last_frames", "stations"
-  add_foreign_key "last_frames", "variables"
-  add_foreign_key "stations", "users"
-  add_foreign_key "value_maxes", "stations"
-  add_foreign_key "value_maxes", "variables"
-  add_foreign_key "value_mins", "stations"
-  add_foreign_key "value_mins", "variables"
-  add_foreign_key "variables", "users"
+  create_table "view_variables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "station_id", null: false
+    t.bigint "variable_id", null: false
+    t.string "name", default: "-", null: false
+    t.string "symbol"
+    t.string "color", default: "#000000"
+    t.text "view_human"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["station_id", "variable_id"], name: "index_view_variables_on_station_id_and_variable_id", unique: true
+    t.index ["station_id"], name: "index_view_variables_on_station_id"
+    t.index ["variable_id"], name: "index_view_variables_on_variable_id"
+  end
+
+  add_foreign_key "data", "frames", on_delete: :cascade
+  add_foreign_key "data", "stations", on_delete: :cascade
+  add_foreign_key "data", "variables", on_delete: :cascade
+  add_foreign_key "frames", "stations", on_delete: :cascade
+  add_foreign_key "last_frames", "stations", on_delete: :cascade
+  add_foreign_key "last_frames", "variables", on_delete: :cascade
+  add_foreign_key "stations", "users", on_delete: :cascade
+  add_foreign_key "value_maxes", "stations", on_delete: :cascade
+  add_foreign_key "value_maxes", "variables", on_delete: :cascade
+  add_foreign_key "value_mins", "stations", on_delete: :cascade
+  add_foreign_key "value_mins", "variables", on_delete: :cascade
+  add_foreign_key "view_variables", "stations", on_delete: :cascade
+  add_foreign_key "view_variables", "variables", on_delete: :cascade
 end

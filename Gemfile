@@ -43,6 +43,9 @@ gem 'devise'
 gem 'bootstrap', '~> 4.0'
 gem 'jquery-rails'
 
+# Binding.pry
+gem 'pry-rails', :group => :development
+
 # Gem for token Auth of App Angular
 #gem 'devise_token_auth'
 #gem 'omniauth'

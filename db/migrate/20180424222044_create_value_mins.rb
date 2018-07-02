@@ -1,8 +1,8 @@
 class CreateValueMins < ActiveRecord::Migration[5.1]
   def change
     create_table :value_mins do |t|
-      t.references :station, foreign_key: true
-      t.references :variable, foreign_key: true
+      t.references :station, foreign_key: {on_delete: :cascade}, null: false
+      t.references :variable, foreign_key: {on_delete: :cascade}, null: false
       t.float :value, default: 8388607 #value max MEDIUMINT type
       t.integer :timestamp
       t.timestamps

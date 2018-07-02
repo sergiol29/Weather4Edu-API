@@ -6,11 +6,14 @@ class Input::V1::CreateVariablesController < ApplicationController
 
   def create
     # If the user who wants to create variable does not exist, not create the variable
-    if !user.nil?
-      @variable = Variable.create!(variables_attrs)
+    if !station.nil?
+      ActiveRecord::Base.transaction do
+        @variable = Variable.create!(code: params[:code])
+        @view_variable = ViewVariable.create!(view_variables_attrs)
 
-      # If all transition is correct, return true and status 200
-      render json: { message: @variable }, status: 200
+        # If all transition is correct, return true and status 200
+        render json: { message: @variable }, status: 200
+      end
     end
 
     # If occurred a error in rescue => error, error.message = it was not ...
@@ -20,18 +23,19 @@ class Input::V1::CreateVariablesController < ApplicationController
   end
 
   private
-  def user
-    @user ||= User.find_by(id: params[:user_id])
+  def station
+    @station ||= Station.find_by(id: params[:station_id])
   end
 
   # created frame with params
-  def variables_attrs
+  def view_variables_attrs
     {
-        user_id: params[:user_id],
-        code: params[:code],
+        station_id: @station.id,
+        variable_id: @variable.id,
         symbol: params[:symbol],
         name: params[:name],
-        color: params[:color]
+        color: params[:color],
+        view_human: params[:view_human]
     }
   end
 
@@ -44,6 +48,6 @@ class Input::V1::CreateVariablesController < ApplicationController
 
   # Check if params DEVICE_CODE, DATA is present in JSON send
   def has_not_mandatory_params?
-    !params[:user_id].present? || !params[:code].present? || !params[:name].present?
+    !params[:station_id].present? || !params[:code].present?
   end
 end

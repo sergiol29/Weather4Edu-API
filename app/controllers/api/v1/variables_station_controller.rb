@@ -1,11 +1,11 @@
-class Api::V1::VariablesUserController < ApplicationController
+class Api::V1::VariablesStationController < ApplicationController
   # before action in def index, run function wrong_params?
   before_action :wrong_params?, only: [:show]
 
   def show
-    if !user.nil?
+    if !station.nil?
       # If all transition is correct, return true and status 200
-      render json: groupped_user, status: 200
+      render json: groupped_station, status: 200
     end
 
     # If occurred a error in rescue => error, error.message = it was not ...
@@ -15,16 +15,25 @@ class Api::V1::VariablesUserController < ApplicationController
   end
 
   private
+  def station
+    @station = Station.find(params[:id])
+    user
+  end
+
   def user
-    @user = User.find(params[:id])
+    @user = User.find(@station.user_id)
+  end
+
+  def variable(variable_id)
+    @variable = Variable.find(variable_id)
   end
 
   def user_variables
-    variables = @user.Variable
+    variables = @station.ViewVariable
     variables.map{ |variable| groupped_variable(variable) }
   end
 
-  def groupped_user
+  def groupped_station
     data = {
         id: @user.id,
         email: @user.email,
@@ -37,9 +46,10 @@ class Api::V1::VariablesUserController < ApplicationController
   def groupped_variable(variable)
     {
         id: variable.id,
-        code: variable.code,
+        code: variable(variable.variable_id).code,
         name: variable.name,
         symbol: variable.symbol,
+        view_human: variable.view_human,
     }
   end
 

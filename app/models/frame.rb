@@ -1,7 +1,8 @@
 class Frame < ApplicationRecord
-  belongs_to :Station, optional: true
+  belongs_to :Station, optional: true, dependent: :destroy
   has_many :Datum
 
+  validates :station_id, presence: true
   validates :raw, presence: true
   validates :timestamp, presence: true
 

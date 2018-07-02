@@ -16,7 +16,7 @@ module  ValueMaxAdmin
         field :timestamp
         field :variable_id do
           pretty_value do
-            Variable.find(bindings[:object].variable_id).name
+            Variable.find(bindings[:object].variable_id).code
           end
         end
       end
@@ -30,7 +30,7 @@ module  ValueMaxAdmin
         field :timestamp
         field :variable_id do
           pretty_value do
-            Variable.find(bindings[:object].variable_id).name
+            Variable.find(bindings[:object].variable_id).code
           end
         end
       end
