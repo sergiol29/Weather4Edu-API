@@ -1,5 +1,5 @@
 class Input::V1::SaveDataController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  #skip_before_action :verify_authenticity_token
 
   # before action in def create, run function wrong_params?
   before_action :wrong_params?, :station, only: [:create]
@@ -77,7 +77,7 @@ class Input::V1::SaveDataController < ApplicationController
     {
         code: params[:STATION_CODE],
         user_id: user_admin,
-        name: '-'
+        name: ''
     }
   end
 

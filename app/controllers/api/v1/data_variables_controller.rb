@@ -1,5 +1,5 @@
 class Api::V1::DataVariablesController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:update]
+  #skip_before_action :verify_authenticity_token, only: [:update]
 
   # before action in def index, run function wrong_params?
   before_action :wrong_params?, only: [:show, :update]
@@ -43,21 +43,38 @@ class Api::V1::DataVariablesController < ApplicationController
     data = {
         code: @variable.code,
         variable_id: view_variable.variable_id,
-        station_id: @view_variable.station_id,
         name: @view_variable.name,
         symbol: @view_variable.symbol,
         color: @view_variable.color,
-        view_human: @view_variable.view_human
+        view_human: @view_variable.view_human,
+        last_value: value_last_data
     }
+  end
+
+  def value_last_data
+    value = LastFrame.find_by(station_id: @view_variable.station_id, variable_id: @view_variable.variable_id)
+    if !value.nil?
+      return value.value
+    else
+      return 0
+    end
   end
 
   def update_variable
     {
-        name: params[:name],
+        name: params[:name].capitalize,
         symbol: params[:symbol],
         color: params[:color],
-        view_human: params[:view_human]
+        view_human: downcase_view_human
     }
+  end
+
+  def downcase_view_human
+    if !params[:view_human].nil?
+      return params[:view_human].downcase
+    else
+      return params[:view_human]
+    end
   end
 
   # Check if params of JSON is correct

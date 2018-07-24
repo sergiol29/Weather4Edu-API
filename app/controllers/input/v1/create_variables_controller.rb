@@ -1,5 +1,5 @@
 class Input::V1::CreateVariablesController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  #skip_before_action :verify_authenticity_token
 
   # before action in def create, run function wrong_params?
   before_action :wrong_params?, only: [:create]
@@ -8,7 +8,7 @@ class Input::V1::CreateVariablesController < ApplicationController
     # If the user who wants to create variable does not exist, not create the variable
     if !station.nil?
       ActiveRecord::Base.transaction do
-        @variable = Variable.create!(code: params[:code])
+        @variable = Variable.create!(code: params[:code].upcase)
         @view_variable = ViewVariable.create!(view_variables_attrs)
 
         # If all transition is correct, return true and status 200
@@ -33,10 +33,18 @@ class Input::V1::CreateVariablesController < ApplicationController
         station_id: @station.id,
         variable_id: @variable.id,
         symbol: params[:symbol],
-        name: params[:name],
+        name: params[:name].capitalize,
         color: params[:color],
-        view_human: params[:view_human]
+        view_human: downcase_view_human
     }
+  end
+
+  def downcase_view_human
+    if !params[:view_human].nil?
+      return params[:view_human].downcase
+    else
+      return params[:view_human]
+    end
   end
 
   # Check if params of JSON is correct

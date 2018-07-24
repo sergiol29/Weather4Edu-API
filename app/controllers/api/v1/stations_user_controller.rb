@@ -22,7 +22,7 @@ class Api::V1::StationsUserController < ApplicationController
   end
 
   def stations_user
-    stations = @user.Station # Get stations of user
+    stations = @user.Station #Get stations of user
     stations.map do |station|
       @station = station # Save in variable station
       groupped_station(station)
@@ -31,7 +31,7 @@ class Api::V1::StationsUserController < ApplicationController
 
   def groupped_user
     data = {
-        id: @user.id,
+        user_id: @user.id,
         email: @user.email,
         name: @user.name,
         company: @user.company,
@@ -63,7 +63,7 @@ class Api::V1::StationsUserController < ApplicationController
         code: @variable.code,
         name: @view_variable.name,
         symbol: @view_variable.symbol,
-        view_human: @view_variable.view_human,
+        view_human: calculateViewHuman(data.value),
         value: data.value,
         timestamp: data.timestamp
     }

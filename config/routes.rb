@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       resources :update_station, only: [:update]
       resources :create_variables, only: [:create]
       resources :delete_variables, only: [:destroy]
+      resources :test_viewhumans, only: [:create]
     end
   end
 

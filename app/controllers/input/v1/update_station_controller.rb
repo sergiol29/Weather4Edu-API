@@ -1,5 +1,5 @@
 class Input::V1::UpdateStationController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  #skip_before_action :verify_authenticity_token
 
   # before action in def update, run function wrong_params?
   before_action :wrong_params?, only: [:update]

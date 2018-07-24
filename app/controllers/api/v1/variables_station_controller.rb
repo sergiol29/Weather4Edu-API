@@ -45,7 +45,7 @@ class Api::V1::VariablesStationController < ApplicationController
 
   def groupped_variable(variable)
     {
-        id: variable.id,
+        id: variable.variable_id,
         code: variable(variable.variable_id).code,
         name: variable.name,
         symbol: variable.symbol,
