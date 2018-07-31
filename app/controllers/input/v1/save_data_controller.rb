@@ -77,7 +77,7 @@ class Input::V1::SaveDataController < ApplicationController
     {
         code: params[:STATION_CODE],
         user_id: user_admin,
-        name: ''
+        name: '-'
     }
   end
 
