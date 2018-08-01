@@ -35,7 +35,7 @@ class Api::V1::StationsUserController < ApplicationController
         email: @user.email,
         name: @user.name,
         company: @user.company,
-        stations: stations_user
+        #stations: stations_user
     }
   end
 
