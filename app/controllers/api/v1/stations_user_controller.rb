@@ -35,14 +35,14 @@ class Api::V1::StationsUserController < ApplicationController
         email: @user.email,
         name: @user.name,
         company: @user.company,
-        #stations: stations_user
+        stations: stations_user
     }
   end
 
   def groupped_station(station)
     {
         id: station.id,
-        name: station.name,
+        #name: station.name,
         latitude: station.latitude,
         longitude: station.longitude,
         last_frame: latest_frame(station)
