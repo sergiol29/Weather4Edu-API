@@ -42,7 +42,7 @@ class Api::V1::StationsUserController < ApplicationController
   def groupped_station(station)
     {
         id: station.id,
-        #name: station.name,
+        name: station.name,
         latitude: station.latitude,
         longitude: station.longitude,
         last_frame: latest_frame(station)
@@ -61,7 +61,7 @@ class Api::V1::StationsUserController < ApplicationController
   def groupped_last_frame(data)
     {
         code: @variable.code,
-        name: @view_variable.name,
+        #name: @view_variable.name,
         symbol: @view_variable.symbol,
         view_human: calculateViewHuman(data.value),
         value: data.value,
