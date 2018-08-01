@@ -38,7 +38,7 @@ class Input::V1::SaveDataController < ApplicationController
     end
   end
 
-  # Check if variable exist, else auto-created station
+  # Check if variable exist, else auto-created variable and View Variable
   def variable(code)
     if Variable.exists?(code: code)
       @variable = Variable.find_by(code: code)
