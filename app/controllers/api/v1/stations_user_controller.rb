@@ -61,7 +61,7 @@ class Api::V1::StationsUserController < ApplicationController
   def groupped_last_frame(data)
     {
         code: @variable.code,
-        #name: @view_variable.name,
+        name: @view_variable.name,
         symbol: @view_variable.symbol,
         view_human: calculateViewHuman(data.value),
         value: data.value,
