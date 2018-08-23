@@ -7,7 +7,6 @@ class Station < ActiveRecord::Base
   has_many :Datum
   has_many :ViewVariable
 
-  validates :name, presence: true
   validates :code, presence: true, uniqueness: true
   validates :user_id, presence: true
 

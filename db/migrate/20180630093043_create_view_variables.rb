@@ -3,7 +3,7 @@ class CreateViewVariables < ActiveRecord::Migration[5.1]
     create_table :view_variables do |t|
       t.references :station, foreign_key: {on_delete: :cascade}, null: false
       t.references :variable, foreign_key: {on_delete: :cascade}, null: false
-      t.string :name, null: false, default: "-"
+      t.string :name
       t.string :symbol
       t.string :color, default: "#000000"
       t.text :view_human

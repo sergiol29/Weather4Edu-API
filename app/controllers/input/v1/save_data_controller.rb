@@ -76,8 +76,7 @@ class Input::V1::SaveDataController < ApplicationController
   def station_attrs
     {
         code: params[:STATION_CODE],
-        user_id: user_admin,
-        name: '-'
+        user_id: user_admin
     }
   end
 
