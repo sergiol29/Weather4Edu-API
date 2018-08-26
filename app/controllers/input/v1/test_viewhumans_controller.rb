@@ -14,10 +14,10 @@ class Input::V1::TestViewhumansController < ApplicationController
       check = eval(view_human)
 
       # If eval is correct, return status 200
-      render json: { result: "Good, all right!", message: "Result with value #{value} is #{check}" }, status: 200
+      render json: { correct: true, result: "Good, all right!", message: "Result with value #{value} is #{check}" }, status: 200
     rescue Exception => e # If eval generate any errors, we control error
       # If eval not correct, return status 400
-      render json: { result: "Ups!", message: "Syntax Error" }, status: 200
+      render json: { correct: false, result: "Ups!", message: "Syntax Error" }, status: 200
     end
   end
 

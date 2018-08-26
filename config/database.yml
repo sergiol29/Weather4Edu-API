@@ -11,6 +11,7 @@
 #
 default: &default
   adapter: postgresql
+  #adapter: mysql2
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
@@ -50,3 +51,9 @@ test:
 production:
   <<: *default
   database: apiTFG_production
+
+#production:
+#  <<: *default
+#  database: apiTFG_production
+#  username: api-tfg
+#  password: <%= ENV['API-TFG_DATABASE_PASSWORD'] %>
